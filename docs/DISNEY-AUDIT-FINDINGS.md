@@ -1,4 +1,4 @@
-# Disney Campaign Manager — QA Audit Findings
+# Disney Campaign Manager - QA Audit Findings
 
 **Date:** November 10, 2026  
 **Auditor:** Iana Grytsenko, Senior SDET (Playwright, TypeScript, Java)  
@@ -14,13 +14,13 @@
 
 ## High
 
-### DCM-001 — Core targeting is blocked while help says it is available
+### DCM-001 - Core targeting is blocked while help says it is available
 **Location:** Campaign builder, `/campaigns/create` (behind the "Setup Campaign Name" dialog).  
 **Steps:** Campaigns > Create Campaign. Open the Targeting section.  
 **Expected:** The targeting categories described in help ("Selecting targeting options") are usable: locations, audiences, genres. Or a clear explanation of which industry restriction applies.  
 **Actual:** Location (City/State/DMA), ZIP Code, Audiences, and Genre are all disabled with the message "This targeting type is not allowed for your industry." Only Gender, Age Groups, and Devices remain usable. The builder never states the account's industry, and the Profile page lists Industry as "Media / Entertainment" with no link or explanation of the restriction or how to change it. Help only mentions limits for "Special, Political, or Mature Ads Categories", which does not match this account.
 
-### DCM-002 — Transient login error after code verification
+### DCM-002 - Transient login error after code verification
 **Location:** `/org-switcher`, immediately after the email verification code was accepted.  
 **Steps:** Sign in with email and password, enter the emailed verification code.  
 **Expected:** Proceed to the dashboard.  
@@ -28,31 +28,31 @@
 
 ## Medium
 
-### DCM-003 — Search boxes are labelled "Search Brands" on the wrong pages
+### DCM-003 - Search boxes are labelled "Search Brands" on the wrong pages
 **Location:** Campaigns list (during list loading) and Account > Users (`/account/users`).  
 **Steps:** Open the Campaigns list or Account > Users and inspect the search field.  
 **Expected:** The accessible name matches the visible label.  
 **Actual:** The search field's accessible name is "Search Brands" while its visible placeholder is "Search Campaigns" / "Search Users". "Search Brands" is correct only on the Brands page, so this looks like a copy-paste error.
 
-### DCM-004 — Help Center and Contact Us load as a blank white page with no loading indicator
+### DCM-004 - Help Center and Contact Us load as a blank white page with no loading indicator
 **Location:** Help Center (`help.dcm.disneyadvertising.com/dcmhub/s/`) and Contact Us (`/s/contactsupport`), and navigating between help articles.  
 **Steps:** Open the Help Center or Contact Us.  
 **Expected:** A spinner or skeleton, or faster render. A blank page looks broken.  
 **Actual:** Each showed a blank white page for roughly 10 to 15 seconds before content appeared.
 
-### DCM-005 — Account pages load as a bare spinner for 10+ seconds, and Payment Methods shows a contradictory state
+### DCM-005 - Account pages load as a bare spinner for 10+ seconds, and Payment Methods shows a contradictory state
 **Location:** Account Management > Profile (`/account/profile`), Payment Methods (`/account/paymentMethods`), Billing (`/account/billing`).  
 **Steps:** Open any of the three pages.  
 **Expected:** A loading state that resolves to content, with no contradictory messages.  
 **Actual:** Each showed only a spinning loader for about 10 seconds. On Payment Methods, "No Payment Methods Available" and "Billings: No billing information available" were already visible while the table spinner was still spinning.
 
-### DCM-006 — Notifications bell shows a green unread dot while the panel says there are none
+### DCM-006 - Notifications bell shows a green unread dot while the panel says there are none
 **Location:** Header bell, all tool pages.  
 **Steps:** Look at the header bell, then open the notifications panel.  
 **Expected:** No unread indicator when there are no new notifications.  
 **Actual:** The bell carries a green dot, its accessible name is "Notifications: no new notifications", and the open panel says "You currently have no in-platform notifications."
 
-### DCM-007 — Create Report drawer shows irrelevant scheduling controls
+### DCM-007 - Create Report drawer shows irrelevant scheduling controls
 **Location:** Reports > Create New Report (`/reports/<id>/report/create`).  
 **Steps:** Open Create New Report with Delivery set to "Prepare for download" (on-demand).  
 **Expected:** Frequency options hidden or disabled for an on-demand report, or an explanation.  
@@ -66,7 +66,7 @@
 
 ## Low
 
-### DCM-009 — Empty lists still show search, "Show 10 entries", and pagination controls
+### DCM-009 - Empty lists still show search, "Show 10 entries", and pagination controls
 **Location:** Payment Methods, Billing (Transactions and Invoices views), Reports.  
 **Actual:** Those controls render for zero rows.
 
@@ -78,7 +78,7 @@
 **Location:** Contact Us support form.  
 **Actual:** The textarea's accessible name is the generic "Textarea field with a placeholder", there is no visible label, and the form asks for no subject, category, or contact details, only free text (0/3000 characters) and an optional file upload, with a "Send" button.
 
-### DCM-012 — Footer year mismatch and generic image alt text in help
+### DCM-012 - Footer year mismatch and generic image alt text in help
 **Location:** Help / Contact Us footer and the "Selecting targeting options" help article.  
 **Actual:** The Help/Contact Us footer says "© 2025 Disney Advertising Sales, LLC" while the tool footer says "© 2026". All 10 images in the "Selecting targeting options" article have the generic alt text "image.png".
 
@@ -90,7 +90,7 @@
 **Location:** Organization/account switcher.  
 **Actual:** The search box has a placeholder only ("Search") and no accessible label. It also offers search for a single account.
 
-### DCM-015 — Near-duplicate help links on Contact Us
+### DCM-015 - Near-duplicate help links on Contact Us
 **Location:** Contact Us resources.  
 **Actual:** "Viewing transaction summary with invoices" and "Viewing invoice summary with invoices" appear as separate resources.
 
