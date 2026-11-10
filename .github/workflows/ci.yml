@@ -1,34 +1,93 @@
+
 name: QA checks
 
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 jobs:
   disney-public-ui:
+    name: Disney public UI
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
+
       - run: npm install
       - run: npx playwright install --with-deps chromium
       - run: npm run typecheck
-      - run: npm test
+      - run: npm run test:no-auth
 
-  campaign-integrity-api:
+      - name: Upload public UI report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: disney-public-ui-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+
+  disney-authenticated-ui:
+    name: Disney authenticated UI
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
+
+      - run: npm install
+      - run: npx playwright install --with-deps chromium
+
+      - name: Restore authenticated browser session
+        env:
+          DCM_STORAGE_STATE_B64: ${{ secrets.DCM_STORAGE_STATE_B64 }}
+        run: |
+          if [ -z "$DCM_STORAGE_STATE_B64" ]; then
+            echo "Missing GitHub Actions secret: DCM_STORAGE_STATE_B64"
+            exit 1
+          fi
+
+          mkdir -p .auth
+          printf '%s' "$DCM_STORAGE_STATE_B64" | base64 --decode > .auth/dcm-state.json
+          test -s .auth/dcm-state.json
+
+      - name: Run authenticated UI tests
+        run: npm run test:auth
+
+      - name: Upload authenticated UI report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: disney-authenticated-ui-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
+  campaign-integrity-api:
+    name: Campaign integrity API
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
       - run: npm install
       - run: npx playwright install --with-deps chromium
       - run: npm run test:api
+
       - name: Upload API Playwright report
         if: always()
         uses: actions/upload-artifact@v4
