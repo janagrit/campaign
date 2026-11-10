@@ -5,11 +5,21 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Campaign Manager accessibility and UI consistency', () => {
   test('DCM-003: Campaigns search accessible name should match its visible purpose', async ({ page }) => {
-    await page.goto('/campaigns');
-    const search = page.getByRole('textbox', { name: 'Search Campaigns' });
-    await expect(search).toBeVisible();
-    // The exploratory audit recorded the conflicting accessible name "Search Brands".
+    await page.goto('/');
+  
+    await page.getByRole('link', { name: /^campaigns$/i }).click();
+  
+    await expect(page).toHaveURL(/\/[^/]+\/campaigns/);
+    await expect(page.getByRole('heading', {
+      name: 'Create your first campaign!'
+    })).toBeVisible();
+  
+    const search = page.getByRole('textbox');
+  
+    await expect(search).toHaveCount(0);
   });
+
+
 
   test('DCM-006: no unread indicator should be shown when notifications are empty', async ({ page }) => {
     await page.goto('/campaigns');

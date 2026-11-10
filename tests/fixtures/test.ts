@@ -2,7 +2,7 @@ import { test as base, expect } from '@playwright/test';
 import { randomUUID } from 'node:crypto';
 import { CampaignApi } from '../../src/api-client.js';
 import { campaignData } from './data.js';
-import { CampaignFactory, CampaignInput, EventFactory } from './types.js';
+import type { CampaignDto, CampaignFactory, EventFactory } from './types.js';
 
 type Fixtures = {
   api: CampaignApi;
